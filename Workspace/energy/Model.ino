@@ -78,7 +78,7 @@ int Model::calculateEnergy(){
   uint16_t wind = ( weather.wind < 6 )?weather.wind * 100/6:( weather.wind < 8 )?100:0;
   uint16_t en_night = genArea( Areas::WIND_PARK)*wind/100 - (useArea( Areas::AREA1) + useArea( Areas::AREA2) + useArea( Areas::AREA3))*0.25;//quarter use in the evening
   uint16_t en_theme = (( weather.temp < 20 )? weather.rain: 5)*useArea( Areas::THEME_PARK )/100;
-  
+  uint16_t en_reception = (( weather.temp < 20 )? weather.rain: 5)*useArea( Areas::THEME_PARK )/100;  
 }
 
 uint16_t Model::scale( uint16_t length ) {
