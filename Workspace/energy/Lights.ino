@@ -1,6 +1,7 @@
 Lights::Lights() {}
 
 void Lights::setup() {
+  enable = false;
   pinMode(A14, OUTPUT);
   for ( int i = 0; i < 3; i++) {
     pinMode(LS0 + i, OUTPUT);
@@ -93,14 +94,15 @@ void Lights::led(byte number, bool signal) {
 }
 
 void Lights::handleInterrupt() {
-  //Serial.println(F("LOOP LEDS: "));
+  if (!enable)
+    return;
   uint16_t shift = 1;
   if ( mask == 0 ) {
     led(15, LOW);
   } else {
     for (int i = 0; i < 7; i++) {
       bool result = shift & mask;
-      if( result )
+      if ( result )
         led(i, result);
       shift <<= 1;
     }

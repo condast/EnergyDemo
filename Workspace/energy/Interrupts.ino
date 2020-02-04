@@ -5,7 +5,7 @@ static volatile unsigned int loopCounter;//checks the duration of the main loop 
 //Activate interrupt Timer2 (0.1 sec)
 ISR(TIMER2_COMPA_vect) {
   loopCounter++;
-  //motors.update(200);
+  motors.handleInterrupt(200);
   lights.handleInterrupt();
 
   interrupt.flank = true;

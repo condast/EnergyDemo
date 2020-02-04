@@ -10,6 +10,7 @@ void ModelView::setup( Options opt, bool nxt) {
   model.setup();
   x = DEFAULT_XPOS;
   y = DEFAULT_YPOS;
+  xpress = 0; ypress = 0;
 
   view.toolbar( 0, ILI9341_WHITE, 2, S_MODEL_TITLE );
 
@@ -65,7 +66,7 @@ void ModelView::setup( Options opt, bool nxt) {
     default:
       break;
   }
-  
+
   if ( next )
     view.next( tft.width() - 50, tft.height() - 50, DIRKSEN_RED_1);
 }
@@ -133,5 +134,16 @@ void ModelView::loop() {
     default:
       break;
   }
+}
+
+void ModelView::handleEvent( uint16_t xp, uint16_t yp) {
+  xpress = xp;
+  ypress = yp;
+  if ( option != ModelView::Options::TRANSFORMER )
+    return;
+
+  Serial.print(F(" MODEL EVENT (")); Serial.print( xp ); Serial.print(F(", ")); Serial.print( yp ); Serial.println(F(")"));
+  loop();
+  tft.fillCircle( xp, y, 10, ILI9341_WHITE);
 
 }

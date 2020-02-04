@@ -10,6 +10,7 @@
 class Lights {
 
   public: Lights(void);
+    bool enable;
     uint16_t mask;
     void setup();
     void led(byte number, bool signal);

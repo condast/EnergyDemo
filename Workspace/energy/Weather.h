@@ -1,6 +1,8 @@
 #ifndef Weather_h
 #define Weather_h
 
+#define COLD_OFFSET 40 //bring the coldest day to february
+
 class Weather {
 
   public: Weather(void);

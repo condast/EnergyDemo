@@ -8,7 +8,7 @@ void Weather::setup() {
 
 float Weather::calcTemperature() {
   uint16_t rand = random( -5, 5);
-  float scale = 2*PI*(( calendar.day + OFFSET) % YEAR )/YEAR;
+  float scale = 2*PI*(( calendar.day + COLD_OFFSET) % YEAR )/YEAR;
   temp = 10 + 20 * ( 1 - cos( scale )); //<-10,30>
   //Serial.print( scale ); Serial.print( " " ); Serial.println( temp);
   return ( temp + rand );

@@ -1,6 +1,7 @@
 FactsView::FactsView() {}
 
 void FactsView::setup() {
+  result = 0;
   tft.fillScreen( ILI9341_WHITE );
   view.toolbar( 0, ILI9341_WHITE, 2, true, S_COLUMNS );
 
@@ -33,5 +34,7 @@ void FactsView::loop( uint16_t days ) {
 }
 
 void FactsView::loop() {
-  view.refreshSimpleSlider( 30, tft.height() - 40, 200, 30, ILI9341_WHITE, DIRKSEN_RED_1, 2 );
+  int res = view.refreshSimpleSlider( 30, tft.height() - 40, 200, 30, ILI9341_WHITE, DIRKSEN_RED_1, 2, MAX_ENERGY );
+  if ( res >= 0)
+    result = res;
 }

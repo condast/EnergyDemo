@@ -6,6 +6,7 @@
 #include "TextView.h"
 #include "ModelView.h"
 #include "FactsView.h"
+#include "Outcome.h"
 
 #define S_INTRO_TITLE F("SELECT A GAME:")
 #define S_MENU_1 F("PLAN YOUR ENERGY")
@@ -17,9 +18,12 @@ static IntroView introView;
 static TextView textView;
 static ModelView modelView;
 static FactsView factsView;
+static Outcome outcome;
 
 class Wizard {
 
+  private: ModelView::Options option;
+  
   public: Wizard(void);
     /**
        States

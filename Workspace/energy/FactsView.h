@@ -3,9 +3,10 @@
 
 #define S_COLUMNS F("Mo Tu  We Th Fr  Sa Su")
 
-class FactsView{
+class FactsView {
 
   public: FactsView(void);
+    int result;
     void setup();
     void loop( uint16_t days);
     void loop();

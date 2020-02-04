@@ -78,11 +78,11 @@ int Model::calculateEnergy(){
   uint16_t wind = ( weather.wind < 6 )?weather.wind * 100/6:( weather.wind < 8 )?100:0;
   uint16_t en_night = genArea( Areas::WIND_PARK)*wind/100 - (useArea( Areas::AREA1) + useArea( Areas::AREA2) + useArea( Areas::AREA3))*0.25;//quarter use in the evening
   uint16_t en_theme = (( weather.temp < 20 )? weather.rain: 5)*useArea( Areas::THEME_PARK )/100;
-  uint16_t en_reception = (( weather.temp < 20 )? weather.rain: 5)*useArea( Areas::THEME_PARK )/100;  
+  return en_day + en_night - en_theme;
 }
 
 uint16_t Model::scale( uint16_t length ) {
-  return ( tft.height() * length ) / (MODEL_LENGTH + OFFSET);
+  return ( tft.height() * length ) / (MODEL_LENGTH + MODEL_OFFSET);
 }
 
 void Model::drawRect( uint16_t x, uint16_t y, uint16_t length, uint16_t width, uint16_t color ) {
@@ -103,6 +103,11 @@ void Model::fillRoundedRect( uint16_t x, uint16_t y, uint16_t length, uint16_t w
 
 void Model::loop() {
   solar.loop();
+  motors.enable = true;
+  motors.vMill = 30;
+  motors.vWalrus = 0;
+  motors.vWaterMill = 30;
+
   Serial.print(F("Solar "));
   for ( int i = 0; i < NR_OF_PANELS; i++) {
     Serial.print(F("(")); Serial.print( i ); Serial.print(F(", ")); Serial.print( solar.get( i )); Serial.print(F(")"));

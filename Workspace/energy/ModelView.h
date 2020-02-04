@@ -27,12 +27,15 @@ class ModelView {
 
     void setup( Options option );
     void setup( Options option, bool next);
+    void handleEvent( uint16_t x, uint16_t y); 
     void loop();
 
   private: byte x, y;
-    const char outstr[1];
-    const char data[6];
+    const char outstr[1] = {'0'};
+    const char data[6] = {'0','0','0','0','0','0'};
     Options option;
     bool next;
+    uint16_t xpress;
+    uint16_t ypress;
 };
 #endif

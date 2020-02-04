@@ -1,16 +1,16 @@
 Wizard::Wizard() {}
 
 void Wizard::setup() {
-  Serial.println(F("SETUP WIZARD"));
   step = MENU;
+  option = ModelView::Options::BARE;
   view.setup();
-  Serial.println(F("MODEL SETUP COMPLETE"));
+  lights.enable = true;
   introView.setup();
-  Serial.println(F("WIZARD SETUP COMPLETE"));
 }
 
 void Wizard::home() {
   step = MENU;
+  option = ModelView::Options::BARE;
 }
 
 byte Wizard::next() {
@@ -25,9 +25,13 @@ byte Wizard::next() {
 
 void Wizard::update() {
   // See if there's any  touch data for us
+  Serial.println(step);
   switch ( step ) {
-    case Wizard::Steps::MENU:
+    case Steps::MENU:
       //Serial.println( step );
+      motors.reset();
+      lights.enable;
+      lights.mask = random(1,512);
       break;
     case Steps::EXPLANATION:
       //Serial.println(F("Explanation"));
@@ -37,10 +41,14 @@ void Wizard::update() {
       modelView.loop();
       break;
     case Steps::FACTS:
+      Serial.println("FACTS");
+      factsView.loop();
       break;
     case Steps::OUTCOME:
       break;
     default:
+      Serial.println("STOP");
+      motors.reset();
       break;
   }
 }
@@ -57,19 +65,22 @@ void Wizard::loop() {
   //Serial.println( ( event != result ) && ( View::Event::NONE  != event ));
 
   //Serial.println( step );
-  switch ( step ) {
+  switch ((Steps)step ) {
     case Wizard::Steps::MENU:
       switch ( event ) {
         case View::Event::MENU_1:
+          option = ModelView::Options::CALENDAR;
           textView.setup( DARK_BLUE, S_MENU_1, TEXT_1);
           next();
           break;
         case View::Event::MENU_2:
+          option = ModelView::Options::TRANSFORMER;
           textView.setup( DARK_BLUE, S_MENU_2, TEXT_2);
           next();
           break;
         case View::Event::MENU_3:
-          modelView.setup( ModelView::Options::SLIDER);
+          option = ModelView::Options::BARE;
+          modelView.setup( option );
           step = Steps::MODEL;
           Serial.print(F("STEP: ")); Serial.println( step );
           break;
@@ -84,24 +95,31 @@ void Wizard::loop() {
           wizard.home();
           break;
         case View::Event::NEXT:
-          modelView.setup( ModelView::Options::CALENDAR);
-          wizard.next();
+          modelView.setup( option );
+          step = Steps::MODEL;
           break;
         default:
           break;
       }
       break;
     case Steps::MODEL:
+      lights.enable = false;
       Serial.print(F("MODEL: ")); Serial.println( event );
+      modelView.handleEvent( view.xTouched, view.yTouched );
       switch ( event ) {
         case View::Event::HOME:
           introView.setup();
           home();
           break;
         case View::Event::NEXT:
-          factsView.setup();
-          factsView.loop( 7 );
-          next();
+          if ( option == ModelView::Options::CALENDAR ) {
+            factsView.setup();
+            factsView.loop( 7 );
+            step = Steps::FACTS;
+          } else {
+            outcome.setup();
+            step = Steps::OUTCOME;
+          }
           break;
         default:
           break;
@@ -116,8 +134,8 @@ void Wizard::loop() {
           home();
           break;
         case View::Event::NEXT:
-          //outcomeView.setup();
-          next();
+          outcome.setup( factsView.result );
+          step = Steps::OUTCOME;
           break;
         default:
           break;
@@ -126,6 +144,7 @@ void Wizard::loop() {
     case Steps::OUTCOME:
       switch ( event ) {
         case View::Event::HOME:
+        case View::Event::NEXT:
           introView.setup();
           home();
           break;
@@ -134,8 +153,8 @@ void Wizard::loop() {
       }
       break;
     default:
-      introView.setup();
+      Serial.print(F("EVENT: ")); Serial.println( event );
       break;
   }
-  result = ( event !=View::Event::NEXT)?event: View::Event::NONE;
+  result = ( event != View::Event::NEXT) ? event : View::Event::NONE;
 }

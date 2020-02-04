@@ -6,11 +6,17 @@ void Motors::setup() {
     pinMode(OS0 + i, OUTPUT);
     digitalWrite(OS0 + i, LOW);
   }
-  vMill = 40;
-  vWalrus = 230;
-  vWaterMill = 80;
   counter = 0;
   test = 0;
+  reset();
+}
+
+void Motors::reset() {
+  enable = false;
+  vMill = 0;
+  vWalrus = 0;
+  vWaterMill = 0;
+  motor(0,LOW);
 }
 
 void Motors::motor(byte number, byte signal) {
@@ -48,7 +54,9 @@ void Motors::calcSpeed( uint16_t results[3], uint16_t total ) {
   results[2] = (vMill * total) / max;
 }
 
-void Motors::update( uint16_t total ) {
+void Motors::handleInterrupt( uint16_t total ) {
+  if (!enable)
+    return;
   uint16_t results[3];
   calcSpeed( results, total );
   if ( counter < results[0]) {
