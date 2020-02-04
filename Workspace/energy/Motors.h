@@ -17,13 +17,15 @@ class Motors {
     uint16_t counter;
 
   public: Motors(void);
+    bool enable;
     byte vWalrus;
     byte vWaterMill;
     byte vMill;
     uint16_t test;
     void setup();
+    void reset();
     void calcSpeed( uint16_t results[3], uint16_t total );
-    void update( uint16_t total );
+    void handleInterrupt( uint16_t total );
     void motor(byte number, byte signal);
     void loop();
 };

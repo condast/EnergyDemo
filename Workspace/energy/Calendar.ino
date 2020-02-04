@@ -36,7 +36,7 @@ byte Calendar::calmod( uint16_t stp ) {
   uint16_t scaled = 1 + ( YEAR + stp ) % YEAR;
   byte daycount = 1;
   do {
-    cmp += daysInMonth( index );
+    cmp += daysInMonth((Months)index );
     daycount = scaled - prev;
     prev = cmp;
     index++;
@@ -51,7 +51,7 @@ Calendar::Months Calendar::calMonth( uint16_t stp ) {
   int index = JANUARY;
   uint16_t scaled = 1+( YEAR + stp ) % YEAR;
   do {
-    cmp += daysInMonth( index );
+    cmp += daysInMonth((Months) index );
     prev = cmp;
     index++;
   }
@@ -110,14 +110,15 @@ void Calendar::printDate( char data[], int stp ) {
   }
 }
 
-String Calendar::printWeek() {
-  char data[6];
+void Calendar::printWeek( char data[]) {
   printDate( data, day );
-  String text = String(data);
-  text += "-";
-  printDate( data, ( day + 7 ) % YEAR );
-  text += data;
-  return text;
+  for( int i=0;i<6;i++){
+    data[i] = data[i];
+  }
+  data[6] = '-';
+  for( int i=0;i<6;i++){
+    data[i+7] = data[i];
+  }
 }
 
 float Calendar::calcBookings() {

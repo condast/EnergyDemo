@@ -178,24 +178,27 @@ void View::menuSelect( uint16_t x, uint16_t y, uint16_t background, uint16_t rou
 }
 
 void View::simpleSlider( uint16_t x, uint16_t y, uint8_t length, uint8_t width, uint16_t background, uint16_t colour, uint8_t size, uint16_t value  ) {
-  tft.drawRoundRect( x, y, length, width, ROUNDING, background);
-  tft.fillRoundRect( x, y + 1, value + ROUNDING, width, ROUNDING, colour);
-  tft.fillRoundRect( x + value, y + 1, (length - value), width - 2, ROUNDING, background);
-  prepare( x + length + 2, y, background, size, true );
+  tft.drawRoundRect( x, y, length, width, ROUNDING, colour);
+  tft.fillRoundRect( x+2, y + 1, value + ROUNDING, width, ROUNDING, colour);
+  tft.fillRoundRect( x + value, y + 1, (length - value-2), width - 2, ROUNDING, background);
+  prepare( x + length + 15, y, colour, size, true );
   tft.print( value );
 }
 
-void View::refreshSimpleSlider( uint16_t x, uint16_t y, uint8_t length, uint8_t width, uint16_t background, uint16_t colour, uint8_t size  ) {
-  uint16_t value = readSlider( x, y, length, width );
-  Serial.print(F("SLIDER: ")); Serial.println( value );
+int View::refreshSimpleSlider( uint16_t x, uint16_t y, uint8_t length, uint8_t width, uint16_t background, uint16_t colour, uint8_t size, uint16_t max  ) {
+  int value = readSlider( x, y, length, width );
+  int result = -1;
   if ( value >= 0 ) {
-    Serial.print(F("SLIDER: ")); Serial.println( value );
-    tft.fillRoundRect( x, y + 1, value + ROUNDING, width, ROUNDING, colour);
+ 
+    tft.fillRoundRect( x+2, y + 1, value + ROUNDING, width, ROUNDING, colour);
     tft.fillRoundRect( x + value, y + 1, (length - value), width - 2, ROUNDING, background);
-    clearText(x, y, background, colour, size, 4);
-    prepare( x + length + 2, y, background, size, true );
-    tft.print( value );
+    clearText(x + length + 15, y, background, colour, size, 4);
+    prepare( x + length + 15, y, colour, size, true );
+    result = ( value * max)/length;
+    tft.print(result );
+    Serial.print(F("SLIDER: ")); Serial.print( value ); Serial.print(F(" Length: ")); Serial.print( length ); Serial.print(F(" max: ")); Serial.print( max ); Serial.print(F(" Result: ")); Serial.println( result );
   }
+  return result;
 }
 
 void View::slider( uint16_t x, uint16_t y, uint8_t length, uint8_t width, uint16_t background, uint16_t colour, uint8_t size, uint16_t min, uint16_t max, uint16_t value  ) {
@@ -212,7 +215,7 @@ void View::slider( uint16_t x, uint16_t y, uint8_t length, uint8_t width, uint16
 
 void View::refreshSlider( uint16_t x, uint16_t y, uint8_t length, uint8_t width, uint16_t background, uint16_t colour, uint8_t size  ) {
   uint16_t slidepos = x + 1 + 4 * size * TEXT_OFFSET;
-  uint16_t value = readSlider( x, y, length, width );
+  int value = readSlider( x, y, length, width );
   if ( value >= 0 ) {
     tft.fillRoundRect( slidepos, y + 1, value + ROUNDING, width, ROUNDING, colour);
     tft.fillRoundRect( slidepos + value, y + 1, (length - value), width - 2, ROUNDING, background);

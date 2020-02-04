@@ -12,7 +12,7 @@
 #define DIRKSEN_RED_3  0xB847 //DIRKSEN RED 3
 
 #define TEXT_1 F("Plan the electricity\nneeded for a week,\ndepending on the weather\nand the bookings.")
-#define TEXT_2 F("Plan the placement of a transformer box\non site")
+#define TEXT_2 F("Plan the placement of a\n transformer box on site")
 #define TEXT_3 F("Actual Generation and Consumption\nof Energy")
 
 // For the Adafruit shield, these are the default.
@@ -69,10 +69,8 @@ static Adafruit_FT6206 ts = Adafruit_FT6206();//touch screen
 class View {
 
   private:
-    int xTouched; 
-    int yTouched;
     uint16_t sliderValue;
-    
+
   public: View(void);
 
     enum Event {
@@ -84,6 +82,8 @@ class View {
       NEXT = 5
     };
 
+    int xTouched;
+    int yTouched;
     void setup();
     String vprinti( uint16_t size, int data );
     String vprintf( int pref, int suff, float num );
@@ -116,8 +116,8 @@ class View {
     void windWidget( uint16_t x, uint16_t y, uint16_t background, uint16_t colour, uint8_t size );
     void celsiusWidget( uint16_t x, uint16_t y, uint16_t background, uint16_t colour, uint8_t size, char chr  );
     void simpleSlider( uint16_t x, uint16_t y, uint8_t length, uint8_t width, uint16_t background, uint16_t colour, uint8_t size, uint16_t value  );
-    void refreshSimpleSlider( uint16_t x, uint16_t y, uint8_t length, uint8_t width, uint16_t background, uint16_t colour, uint8_t size );
-     void slider( uint16_t x, uint16_t y, uint8_t length, uint8_t width, uint16_t background, uint16_t colour, uint8_t size, uint16_t min, uint16_t max, uint16_t value  );
+    int refreshSimpleSlider( uint16_t x, uint16_t y, uint8_t length, uint8_t width, uint16_t background, uint16_t colour, uint8_t size, uint16_t max );
+    void slider( uint16_t x, uint16_t y, uint8_t length, uint8_t width, uint16_t background, uint16_t colour, uint8_t size, uint16_t min, uint16_t max, uint16_t value  );
     void refreshSlider( uint16_t x, uint16_t y, uint8_t length, uint8_t width, uint16_t background, uint16_t colour, uint8_t size );
     int readSlider( uint16_t x, uint16_t y, uint8_t length, uint8_t width );//returns a negative value if the value has not changed
     byte getEvent();

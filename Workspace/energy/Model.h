@@ -7,7 +7,7 @@
 //SCALE
 #define MODEL_LENGTH  80 //cm
 #define MODEL_WIDTH  80 //cm
-#define OFFSET 2
+#define MODEL_OFFSET 40
 #define ROUNDING 5
 
 //MODEL
@@ -16,11 +16,12 @@
 #define HOUSES_AREA3  200
 
 //ENERGY
-#define E_SOLAR_HOUSE 2     //MJoule per house
-#define E_RECEPTION   10    //MJoule
-#define E_THEME_PARK  15    //MJoule
-#define E_SOLAR_PARK  15    //MJoule
-#define E_WIND_PARK   15    //MJoule
+#define MAX_ENERGY    500 //MWh
+#define E_SOLAR_HOUSE 2     //kwH per house
+#define E_RECEPTION   10    //kwh
+#define E_THEME_PARK  15    //kwh
+#define E_SOLAR_PARK  15    //kwh
+#define E_WIND_PARK   15    //kwh
 #define SCALE_FACTOR  1000  //scale the readings from the solar panels
 //VIEW
 #define TEXT_OFFSET 6;

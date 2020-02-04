@@ -2,7 +2,6 @@
 
 #include "Adafruit_GFX.h"
 #include "Adafruit_ILI9341.h"
-#include "Fonts/FreeSerif9pt7b.h"
 #include "Adafruit_FT6206.h"
 
 #include "Wizard.h"
@@ -30,13 +29,14 @@ int test;
 void setup() {
   Serial.begin(9600);
   Serial.println(F("SETUP ENERGY TRANSITION DEMO"));
-  wizard.setup();
   interrupt.setup();
   lights.setup();
+  motors.setup();
   calendar.setup();
   weather.setup();
   generator.setup( HOUSES_AREA1, HOUSES_AREA2, HOUSES_AREA3 );
   result = View::Event::NONE;
+  wizard.setup();
 }
 
 void loop() {
@@ -45,7 +45,6 @@ void loop() {
   //generator.loop();
   //useage.loop();
   //factsView.loop( 7 ); //One week
-  lights.mask = 0x007;
   if ( interrupt.getSecondsFlank()) {
     interrupt.clear();
     load = ( load + 1 ) % 120;
