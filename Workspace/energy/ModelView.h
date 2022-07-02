@@ -32,7 +32,7 @@ class ModelView {
 
   private: byte x, y;
     const char outstr[1] = {'0'};
-    const char data[6] = {'0','0','0','0','0','0'};
+    const char data[12] = {'0','0','0','0','0','0','0','0','0','0','0','0'};
     Options option;
     bool next;
     uint16_t xpress;

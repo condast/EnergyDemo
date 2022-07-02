@@ -1,20 +1,20 @@
 View::View() {}
 
 void View::setup() {
-  Serial.println("ILI9341 Test!");
+  Serial.println(F("ILI9341 Test!"));
   tft.begin();
 
   // read diagnostics (optional but can help debug problems)
   uint8_t x = tft.readcommand8(ILI9341_RDMODE);
-  Serial.print("Display Power Mode: 0x"); Serial.println(x, HEX);
+  Serial.print(F("Display Power Mode: 0x")); Serial.println(x, HEX);
   x = tft.readcommand8(ILI9341_RDMADCTL);
-  Serial.print("MADCTL Mode: 0x"); Serial.println(x, HEX);
+  Serial.print(F("MADCTL Mode: 0x")); Serial.println(x, HEX);
   x = tft.readcommand8(ILI9341_RDPIXFMT);
-  Serial.print("Pixel Format: 0x"); Serial.println(x, HEX);
+  Serial.print(F("Pixel Format: 0x")); Serial.println(x, HEX);
   x = tft.readcommand8(ILI9341_RDIMGFMT);
-  Serial.print("Image Format: 0x"); Serial.println(x, HEX);
+  Serial.print(F("Image Format: 0x")); Serial.println(x, HEX);
   x = tft.readcommand8(ILI9341_RDSELFDIAG);
-  Serial.print("Self Diagnostic: 0x"); Serial.println(x, HEX);
+  Serial.print(F("Self Diagnostic: 0x")); Serial.println(x, HEX);
 
   Serial.println(F("Benchmark Time (microseconds)"));
   delay(10);
@@ -34,7 +34,7 @@ void View::setup() {
 String View::vprinti( uint16_t size, int num ) {
   char data[size + 2];
   char format[4];
-  String str = "%"; str += size; str += "d";
+  String str = F("%"); str += size; str += F("d");
   str.toCharArray( format, size);
   //Serial.print( str ); Serial.print( F(": ")); Serial.println( size );
   sprintf(data, format, num);
@@ -168,13 +168,13 @@ void View::refreshSimpleLabelText( uint16_t x, uint16_t y, uint16_t background, 
 }
 
 void View::menu( uint16_t x, uint16_t y, uint16_t background, uint16_t colour, uint16_t rounding, uint8_t size, String label ) {
-  tft.drawRoundRect( x, y, 30, 30, rounding, background);
-  prepare( x + 40, y + 5, colour, size, false );
+  tft.fillRoundRect( x, y, BUTTON_SIZE, BUTTON_SIZE, rounding, background);
+  prepare( x + 60, y + 15, colour, size, false );
   vprint( label );
 }
 
 void View::menuSelect( uint16_t x, uint16_t y, uint16_t background, uint16_t rounding ) {
-  tft.fillRoundRect( x, y, 30, 30, rounding, background);
+  tft.fillRoundRect( x, y, BUTTON_SIZE, BUTTON_SIZE, rounding, background);
 }
 
 void View::simpleSlider( uint16_t x, uint16_t y, uint8_t length, uint8_t width, uint16_t background, uint16_t colour, uint8_t size, uint16_t value  ) {
@@ -207,7 +207,7 @@ void View::slider( uint16_t x, uint16_t y, uint8_t length, uint8_t width, uint16
 
   uint16_t slidepos = x + 4 * size * TEXT_OFFSET;
   prepare( slidepos + length + 2, y, background, size, true );
-  vprint( "200" );//vprinti( 3, max ));
+  vprint( F("200"));//vprinti( 3, max ));
   Serial.println( vprinti( 3, max ));
   tft.drawRoundRect( slidepos, y, length, width, ROUNDING, background);
   refreshSlider( x, y, length, width, background, colour, size );

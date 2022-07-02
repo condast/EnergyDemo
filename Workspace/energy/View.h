@@ -11,6 +11,9 @@
 #define DIRKSEN_RED_2  0xC888 //DIRKSEN RED 2
 #define DIRKSEN_RED_3  0xB847 //DIRKSEN RED 3
 
+#define BUTTON_SIZE 50
+#define BUTTON_ROUNDING 2
+
 #define TEXT_1 F("Plan the electricity\nneeded for a week,\ndepending on the weather\nand the bookings.")
 #define TEXT_2 F("Plan the placement of a\n transformer box on site")
 #define TEXT_3 F("Actual Generation and Consumption\nof Energy")
